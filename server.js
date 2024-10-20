@@ -18,16 +18,17 @@ app.post('/webhook', async (req, res) => {
 
   if (message) {
     const chatId = message.chat.id;
-    const text = `You said: ${message.text}`;
+    const text = `Hello! I'm your Next.js Telegram bot. You said: ${message.text}`;
 
     await axios.post(`${TELEGRAM_API}/sendMessage`, {
       chat_id: chatId,
-      text: text
+      text: text,
+      reply_to_message_id: message.message_id
     });
 
-    res.send('Message received');
+    res.status(200).json({ message: 'Message sent successfully' });
   } else {
-    res.send('No message body');
+    res.status(400).json({ message: 'No message found in request' });
   }
 });
 
